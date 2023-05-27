@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"os"
-	"strings"
+
+	cli "github.com/superchausette/hackattic-golang/common"
 )
 
 const base64Char = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -15,14 +14,6 @@ func CreateDecodeMap() map[rune]byte {
 		decodeMap[c] = byte(i)
 	}
 	return decodeMap
-}
-
-func RetrieveSTDIn() []string {
-	stdin, err := io.ReadAll(os.Stdin)
-	if err != nil {
-		panic(err)
-	}
-	return strings.Split(string(stdin), "\n")
 }
 
 func Decode4Base64(input []rune, decodeMap map[rune]byte) [4]uint8 {
@@ -73,7 +64,7 @@ func Debase64(input string, decodeMap map[rune]byte) string {
 }
 
 func main() {
-	input := RetrieveSTDIn()
+	input := cli.RetrieveStdin()
 	decodeMap := CreateDecodeMap()
 	for _, base64Entry := range input {
 		fmt.Println(string(Debase64(base64Entry, decodeMap)))
